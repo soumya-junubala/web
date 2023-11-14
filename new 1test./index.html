@@ -1,315 +1,285 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Make Your Own Panipuri Adventure</title>
     <style>
         body {
-            margin: 0;
             font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: black;
+            background-image: url('panipuri_start.jpg'); /* Set the initial background image */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
         header {
-            background-color: #2c3e50;
-            color: white;
-            padding: 1em;
+            background-color: #8e44ad; /* Light purple background color */
+            color: black; /* Text color */
             text-align: center;
+            padding: 10px;
         }
 
-        main {
-            padding: 2em;
+        #story {
+            font-size: 18px;
+            margin: 20px;
+            font-weight: bold;
+            color: black; /* Text color */
+        }
+
+        #choices {
+            margin: 20px;
+        }
+
+        #storyImage {
+            width: 100%;
+            height: 100vh;
+            object-fit: cover;
+            margin: 20px;
+        }
+
+        #buttonsContainer {
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            justify-content: space-between;
+            margin: 20px;
         }
 
-        img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
+        #beginButton,
+        #restartButton {
+            background-color: #3498db; /* Button background color */
+            color: white; /* Button text color */
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s ease; /* Added transition for hover effect */
+        }
+
+        #beginButton:hover,
+        #restartButton:hover {
+            background-color: #2980b9; /* Button background color on hover */
+            transform: scale(1.05); /* Hover effect: slightly increase button size */
         }
 
         footer {
-            background-color: #2c3e50;
-            color: white;
-            padding: 1em;
-            text-align: center;
+            color: black; /* Text color */
+            background-color: #8e44ad; /* Light purple background color */
+            padding: 20px;
         }
 
-        button {
-            margin: 5px;
-            padding: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 5px;
+        header:hover,
+        footer:hover {
+            background-color: #6c3483; /* Darker purple background color on hover */
         }
 
-        button:hover {
-            background-color: #2980b9;
-        }
-
-        /* Additional CSS for Addendum */
-        #addendum {
-            margin-top: 20px;
-            font-style: italic;
+        #storyImage:hover {
+            transform: scale(1.1); /* Hover effect: slightly increase image size */
         }
     </style>
+    <title>Make Your Own Panipuri Adventure</title>
 </head>
+
 <body>
     <header>
         <h1>Make Your Own Panipuri Adventure</h1>
+        <div id="buttonsContainer">
+            <button id="beginButton" onclick="startGame()">Begin</button>
+            <button id="restartButton" onclick="startGame()">Start Again</button>
+        </div>
     </header>
-
-    <main id="game-container">
-        <p id="story-text">You find yourself in the vibrant world of panipuri. What will you do?</p>
-        <div id="choices"></div>
-        <img id="stage-image" alt="Stage Image">
-        <button id="start-restart-button" onclick="startGame()">Start / Restart</button>
-    </main>
-
-    <footer>
-        <p id="addendum-text">Addendum: Your journey unfolds with every choice you make.</p>
-        <p id="addendum">Your creative choices have shaped the destiny of your panipuri adventure. Reflect on the paths you've taken and the flavors you've discovered.</p>
-    </footer>
-
+    <div id="story"></div>
+    <div id="choices"></div>
+    <img id="storyImage" />
     <script>
-        const storyData = {
+        const story = {
             start: {
                 text: "You find yourself in the vibrant world of panipuri. What will you do?",
                 choices: [
-                    {
-                        text: "Visit the Pani Puri Stall",
-                        nextState: "visitStall",
-                        image: "panipuri1.jpg"
-                    },
-                    {
-                        text: "Make Your Own Panipuri at Home",
-                        nextState: "makeAtHome",
-                        image: "https://www.indianveggiedelight.com/wp-content/uploads/2017/03/mexiacanpuri-min.jpg"
-                    }
-                ]
+                    "Visit the Pani Puri Stall",
+                    "Make Your Own Panipuri at Home"
+                ],
+                consequences: ["visitStall", "makeAtHome"],
+                images: ["panipuri1.jpg", "homePanipuri.jpg"]
             },
             visitStall: {
                 text: "You visit the bustling pani puri stall with a variety of flavored waters and fillings.",
                 choices: [
-                    {
-                        text: "Try the Spicy Pani Puri",
-                        nextState: "spicyPani",
-                        image: "panipuri3.jpg"
-                    },
-                    {
-                        text: "Opt for the Sweet and Tangy Pani Puri",
-                        nextState: "sweetTangyPani",
-                        image: "https://source.unsplash.com/800x600/?sweet-food"
-                    }
-                ]
+                    "Try the Spicy Pani Puri",
+                    "Opt for the Sweet and Tangy Pani Puri"
+                ],
+                consequences: ["spicyPani", "sweetTangyPani"],
+                images: ["panipuri3.jpg", "sweetTangyPani.jpg"]
             },
             makeAtHome: {
                 text: "You decide to make your own panipuri at home with your favorite ingredients.",
                 choices: [
-                    {
-                        text: "Prepare the Puri Shells",
-                        nextState: "prepareShells",
-                        image: "https://source.unsplash.com/800x600/?cooking"
-                    },
-                    {
-                        text: "Mix the Pani and Fillings",
-                        nextState: "mixPaniFillings",
-                        image: "https://source.unsplash.com/800x600/?mixing"
-                    }
-                ]
+                    "Prepare the Puri Shells",
+                    "Mix the Pani and Fillings"
+                ],
+                consequences: ["prepareShells", "mixPaniFillings"],
+                images: ["prepareShells.jpg", "mixPaniFillings.jpg"]
             },
             spicyPani: {
                 text: "You try the spicy pani puri and your taste buds go on an exciting journey.",
                 choices: [
-                    {
-                        text: "Have Another Round",
-                        nextState: "spicyPani",
-                        image: "https://source.unsplash.com/800x600/?spicy-food"
-                    },
-                    {
-                        text: "Explore Other Flavors",
-                        nextState: "visitStall",
-                        image: "https://source.unsplash.com/800x600/?street-food"
-                    }
-                ]
+                    "Have Another Round",
+                    "Explore Other Flavors"
+                ],
+                consequences: ["spicyPani", "visitStall"],
+                images: ["spicyPani.jpg", "exploreFlavors.jpg"]
             },
             sweetTangyPani: {
                 text: "The sweet and tangy flavors of pani puri delight your palate.",
                 choices: [
-                    {
-                        text: "Savor the Sweetness",
-                        nextState: "sweetTangyPani",
-                        image: "https://source.unsplash.com/800x600/?sweet-food"
-                    },
-                    {
-                        text: "Try Spicy Pani for Contrast",
-                        nextState: "visitStall",
-                        image: "https://source.unsplash.com/800x600/?spicy-food"
-                    }
-                ]
+                    "Savor the Sweetness",
+                    "Try Spicy Pani for Contrast"
+                ],
+                consequences: ["sweetTangyPani", "visitStall"],
+                images: ["sweetTangyPani.jpg", "spicyPaniContrast.jpg"]
             },
             prepareShells: {
                 text: "You master the art of preparing crispy and hollow puri shells.",
                 choices: [
-                    {
-                        text: "Continue Cooking",
-                        nextState: "prepareShells",
-                        image: "https://source.unsplash.com/800x600/?cooking"
-                    },
-                    {
-                        text: "Proceed to Mixing Pani and Fillings",
-                        nextState: "mixPaniFillings",
-                        image: "https://source.unsplash.com/800x600/?mixing"
-                    }
-                ]
+                    "Continue Cooking",
+                    "Proceed to Mixing Pani and Fillings"
+                ],
+                consequences: ["prepareShells", "mixPaniFillings"],
+                images: ["prepareShells.jpg", "mixPaniFillings.jpg"]
             },
             mixPaniFillings: {
                 text: "You mix the flavorful pani and delicious fillings for the perfect panipuri experience.",
                 choices: [
-                    {
-                        text: "Assemble and Eat",
-                        nextState: "assembleEat",
-                        image: "https://source.unsplash.com/800x600/?eating"
-                    },
-                    {
-                        text: "Share Your Recipe",
-                        nextState: "shareRecipe",
-                        image: "https://source.unsplash.com/800x600/?sharing"
-                    }
-                ]
+                    "Assemble and Eat",
+                    "Share Your Recipe"
+                ],
+                consequences: ["assembleEat", "shareRecipe"],
+                images: ["assembleEat.jpg", "shareRecipe.jpg"]
             },
             assembleEat: {
                 text: "You assemble your panipuri and enjoy the burst of flavors with each bite.",
                 choices: [
-                    {
-                        text: "Have Another Round",
-                        nextState: "assembleEat",
-                        image: "https://source.unsplash.com/800x600/?eating"
-                    },
-                    {
-                        text: "Reflect on Your Panipuri Adventure",
-                        nextState: "reflectAdventure",
-                        image: "https://source.unsplash.com/800x600/?reflecting"
-                    }
-                ]
+                    "Have Another Round",
+                    "Reflect on Your Panipuri Adventure"
+                ],
+                consequences: ["assembleEat", "reflectAdventure"],
+                images: ["assembleEat1.jpg", "reflectAdventure.jpg"]
             },
             shareRecipe: {
                 text: "You share your delicious panipuri recipe with friends and family.",
                 choices: [
-                    {
-                        text: "Make More Panipuri",
-                        nextState: "makeAtHome",
-                        image: "https://source.unsplash.com/800x600/?home-cooking"
-                    },
-                    {
-                        text: "Reflect on Your Panipuri Adventure",
-                        nextState: "reflectAdventure",
-                        image: "https://source.unsplash.com/800x600/?reflecting"
-                    }
-                ]
+                    "Make More Panipuri",
+                    "Reflect on Your Panipuri Adventure"
+                ],
+                consequences: ["makeAtHome", "reflectAdventure"],
+                images: ["makeMorePanipuri.jpg", "reflectAdventure.jpg"]
             },
             reflectAdventure: {
                 text: "You reflect on your delightful panipuri adventure.",
                 choices: [
-                    {
-                        text: "Start a New Culinary Journey",
-                        nextState: "start",
-                        image: "https://source.unsplash.com/800x600/?cooking"
-                    },
-                    {
-                        text: "Share Your Panipuri Story",
-                        nextState: "shareStory",
-                        image: "https://source.unsplash.com/800x600/?sharing"
-                    }
-                ]
+                    "Start a New Culinary Journey",
+                    "Share Your Panipuri Story"
+                ],
+                consequences: ["start", "shareStory"],
+                images: ["newCulinaryJourney.jpg", "sharePanipuriStory.jpg"]
             },
             shareStory: {
                 text: "You share your exciting panipuri story with the world.",
                 choices: [
-                    {
-                        text: "Start a New Culinary Journey",
-                        nextState: "start",
-                        image: "https://source.unsplash.com/800x600/?cooking"
-                    },
-                    {
-                        text: "Reflect on Your Panipuri Adventure",
-                        nextState: "reflectAdventure",
-                        image: "https://source.unsplash.com/800x600/?reflecting"
-                    }
-                ]
+                    "Start a New Culinary Journey",
+                    "Reflect on Your Panipuri Adventure"
+                ],
+                consequences: ["start", "reflectAdventure"],
+                images: ["newCulinaryJourney.jpg", "reflectAdventure1.jpg"]
             }
         };
 
-        const gameContainer = document.getElementById("game-container");
-        const storyText = document.getElementById("story-text");
-        const choicesContainer = document.getElementById("choices");
-        const stageImage = document.getElementById("stage-image");
-        const addendumText = document.getElementById("addendum-text");
-        const addendum = document.getElementById("addendum");
-
-        let currentStage = "start";
+        let currentState = "start";
 
         function startGame() {
-            currentStage = "start";
+            currentState = "start";
             updatePage();
+            document.body.style.backgroundImage = 'none';
         }
 
         function updatePage() {
-            const stage = storyData[currentStage];
-            storyText.innerText = stage.text;
-            stageImage.src = stage.image;
+            const stage = story[currentState];
+            document.getElementById("story").innerText = stage.text;
 
-            // Clear previous choices
-            choicesContainer.innerHTML = "";
+            document.getElementById("choices").innerHTML = "";
 
-            // Display choices
             stage.choices.forEach((choice, index) => {
                 const button = document.createElement("button");
-                button.textContent = choice.text;
+                button.innerText = choice;
                 button.addEventListener("click", () => makeChoice(index));
-                choicesContainer.appendChild(button);
+                document.getElementById("choices").appendChild(button);
             });
 
-            // Scroll to the bottom of the page
-            window.scrollTo(0, document.body.scrollHeight);
+            const storyImage = document.getElementById("storyImage");
+            storyImage.src = stage.images[Math.floor(Math.random() * stage.images.length)];
+
+            if (currentState === "visitStall") {
+                storyImage.style.height = "100vh";
+            } else {
+                storyImage.style.height = "auto";
+            }
         }
 
         function makeChoice(index) {
-            const stage = storyData[currentStage];
-            const choice = stage.choices[index];
-            currentStage = choice.nextState;
+            currentState = story[currentState].consequences[index];
+            updatePage();
 
-            // Check if the game has ended
-            if (!storyData[currentStage]) {
+            if (currentState === "spicyPani") {
+                document.getElementById("storyImage").src = story.spicyPani.images[0];
+            } else if (currentState === "sweetTangyPani") {
+                document.getElementById("storyImage").src = story.sweetTangyPani.images[0];
+            }
+
+            if (currentState.startsWith("ending")) {
                 endGame();
-            } else {
-                updatePage();
             }
         }
 
         function endGame() {
-            // Display final addendum and reset
-            addendumText.innerText = "Addendum: Your panipuri adventure unfolds with every choice you make.";
-            addendum.innerText = "Your creative choices have shaped the destiny of your panipuri adventure. Reflect on the paths you've taken and the flavors you've discovered.";
-            currentStage = "start";
-            updatePage();
-        }
+            const stage = story[currentState];
+            document.getElementById("story").innerText = stage.text;
 
-        // Additional function for starting/restarting the game
-        function startGame() {
-            currentStage = "start";
-            updatePage();
-        }
+            document.getElementById("choices").innerHTML = "";
 
-        // Initial page load
-        startGame();
+            document.getElementById("storyImage").src = stage.images[0];
+        }
     </script>
+    <footer>
+	<div id="addendum">
+        <h2>Addendum</h2>
+        <p>
+            Your Panipuri Adventure:
+            <ul>
+                <li>Embark on a journey through the vibrant world of panipuri.</li>
+                <li>Make choices to visit stalls, try different flavors, or create your own panipuri at home.</li>
+                <li>Share your panipuri experience and reflect on your delightful adventure.</li>
+            </ul>
+            Challenges Faced:
+            <ul>
+                <li>Dynamic display of images based on user choices.</li>
+                <li>Ensuring a seamless and engaging narrative flow for a delightful experience.</li>
+            </ul>
+            Creative Choices:
+            <ul>
+                <li>Randomizing background images to provide a variety of experiences.</li>
+                <li>Using full-screen images to emphasize key moments in the panipuri adventure.</li>
+            </ul>
+            Insights Gained:
+            <ul>
+                <li>Importance of user immersion in interactive storytelling.</li>
+                <li>Balancing narrative depth with user agency for an enjoyable experience.</li>
+            </ul>
+        </p>
+		</div>
+    </footer>
 </body>
+
 </html>
