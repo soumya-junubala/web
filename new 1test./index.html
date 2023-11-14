@@ -6,19 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Verdana', sans-serif;
             margin: 0;
             padding: 0;
-            color: black;
-            background-image: url('panipuri_start.jpg'); /* Set the initial background image */
+            color: #333;
+            background-image: url('panipuri_background.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
         }
 
         header {
-            background-color: #8e44ad; /* Light purple background color */
-            color: black; /* Text color */
+            background-color: #ff7f50;
+            color: white;
             text-align: center;
             padding: 10px;
         }
@@ -27,7 +27,7 @@
             font-size: 18px;
             margin: 20px;
             font-weight: bold;
-            color: black; /* Text color */
+            color: #333;
         }
 
         #choices {
@@ -39,6 +39,7 @@
             height: 100vh;
             object-fit: cover;
             margin: 20px;
+            border: 2px solid #333;
         }
 
         #buttonsContainer {
@@ -49,48 +50,55 @@
 
         #beginButton,
         #restartButton {
-            background-color: #3498db; /* Button background color */
-            color: white; /* Button text color */
+            background-color: #32cd32;
+            color: white;
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
             border: none;
             border-radius: 5px;
-            transition: background-color 0.3s ease, transform 0.2s ease; /* Added transition for hover effect */
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
 
         #beginButton:hover,
         #restartButton:hover {
-            background-color: #2980b9; /* Button background color on hover */
-            transform: scale(1.05); /* Hover effect: slightly increase button size */
+            background-color: #228b22;
+            transform: scale(1.05);
         }
 
         footer {
-            color: black; /* Text color */
-            background-color: #8e44ad; /* Light purple background color */
+            color: #333;
+            background-color: #ff7f50;
             padding: 20px;
         }
 
         header:hover,
         footer:hover {
-            background-color: #6c3483; /* Darker purple background color on hover */
+            background-color: #ff6347;
         }
-	    
+
+        #addendum {
+            padding: 20px;
+            background-color: #87ceeb;
+            border: 2px solid #333;
+            border-radius: 10px;
+        }
     </style>
-    <title>Make Your Own Panipuri Adventure</title>
+    <title>Embark on a Panipuri Journey</title>
 </head>
 
 <body>
     <header>
-        <h1>Make Your Own Panipuri Adventure</h1>
+        <h1>Embark on a Panipuri Journey</h1>
         <div id="buttonsContainer">
             <button id="beginButton" onclick="startGame()">Begin</button>
-            <button id="restartButton" onclick="startGame()">Start Again</button>
+            <button id="restartButton" onclick="startGame()">Start a new</button>
         </div>
     </header>
     <div id="story"></div>
     <div id="choices"></div>
     <img id="storyImage" />
+
     <script>
         const story = {
             start: {
@@ -218,21 +226,23 @@
             const storyImage = document.getElementById("storyImage");
             storyImage.src = stage.images[Math.floor(Math.random() * stage.images.length)];
 
-            if (currentState === "visitStall") {
+            if (currentState === "visitHaven") {
                 storyImage.style.height = "100vh";
             } else {
                 storyImage.style.height = "auto";
             }
+
+            storyImage.style.border = "2px solid #333";
         }
 
         function makeChoice(index) {
             currentState = story[currentState].consequences[index];
             updatePage();
 
-            if (currentState === "spicyPani") {
-                document.getElementById("storyImage").src = story.spicyPani.images[0];
-            } else if (currentState === "sweetTangyPani") {
-                document.getElementById("storyImage").src = story.sweetTangyPani.images[0];
+            if (currentState === "spicyRound") {
+                document.getElementById("storyImage").src = story.spicySavor.images[0];
+            } else if (currentState === "sweetRelish") {
+                document.getElementById("storyImage").src = story.sweetIndulge.images[0];
             }
 
             if (currentState.startsWith("ending")) {
@@ -250,32 +260,28 @@
         }
     </script>
     <footer>
-	<div id="addendum">
-        <h2>Addendum</h2>
-        <p>
-            Your Panipuri Adventure:
-            <ul>
-                <li>Embark on a journey through the vibrant world of panipuri.</li>
-                <li>Make choices to visit stalls, try different flavors, or create your own panipuri at home.</li>
-                <li>Share your panipuri experience and reflect on your delightful adventure.</li>
-            </ul>
-            Challenges Faced:
-            <ul>
-                <li>Dynamic display of images based on user choices.</li>
-                <li>Ensuring a seamless and engaging narrative flow for a delightful experience.</li>
-            </ul>
-            Creative Choices:
-            <ul>
-                <li>Randomizing background images to provide a variety of experiences.</li>
-                <li>Using full-screen images to emphasize key moments in the panipuri adventure.</li>
-            </ul>
-            Insights Gained:
-            <ul>
-                <li>Importance of user immersion in interactive storytelling.</li>
-                <li>Balancing narrative depth with user agency for an enjoyable experience.</li>
-            </ul>
-        </p>
-		</div>
+        <div id="addendum">
+		    <h2>Addendum</h2>
+			
+            <br>Chronicles of Panipuri Adventures:</br>
+            <p>
+                Your Panipuri Expedition: Embark on a whimsical journey through the realm of panipuri.
+                Make choices to explore bustling havens, savor unique flavors, or create your own panipuri masterpiece at home.
+                Share your panipuri escapade and ponder on the delightful moments of your adventure.
+            </p>
+            <p>
+                Challenges Overcome: Dynamically displaying images based on user choices.
+                Weaving a seamless and engaging narrative for an immersive experience.
+            </p>
+            <p>
+                Creative Endeavors: Randomizing background images to offer a diverse visual experience.
+                Using full-screen images to accentuate key moments in the panipuri saga.
+            </p>
+            <p>
+                Insights Unveiled: The significance of user immersion in interactive storytelling.
+                Striking a balance between narrative depth and user agency for an enjoyable journey.
+            </p>
+        </div>
     </footer>
 </body>
 
